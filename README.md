@@ -4,3 +4,4 @@ A simple Rust API for managing a todo list. It use Rocket for the API, and a Mon
 ## Routes
 
 `POST /todo` Posts a todo in the database. Format: { name: String, checked: bool }.
+`GET /todo/:path` Gets a todo with and id of 'path' from the database.
