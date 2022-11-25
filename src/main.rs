@@ -1,11 +1,16 @@
+mod api;
+mod models;
+mod repository;
+
 #[macro_use] extern crate rocket;
 
-#[get("/hello/<name>/<age>")]
-fn hello(name: &str, age: u8) -> String {
-    format!("Hello world, {} year old named {}!", age, name)
-}
+use api::todo_api::create_todo;
+use repository::mongodb_repo::MongoRepo;
 
 #[launch]
 fn rocket() -> _ {
-    rocket::build().mount("/", routes![hello])
+    let db = MongoRepo::init();
+    rocket::build()
+        .manage(db)
+        .mount("/", routes![create_todo])
 }
