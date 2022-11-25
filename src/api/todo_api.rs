@@ -25,3 +25,19 @@ pub fn create_todo(
         Err(_) => Err(Status::InternalServerError),
     }
 }
+
+#[get("/todo/<path>")]
+pub fn get_todo(
+    db: &State<MongoRepo>,
+    path: String,
+) -> Result<Json<Todo>, Status> {
+    let id = path;
+    if id.is_empty() {
+        return Err(Status::BadRequest);
+    }
+    let todo_detail = db.get_todo(&id);
+    match todo_detail {
+        Ok(todo) => Ok(Json(todo)),
+        Err(_) => Err(Status::InternalServerError),
+    }
+}

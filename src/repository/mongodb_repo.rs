@@ -3,7 +3,7 @@ extern crate dotenv;
 use dotenv::dotenv;
 
 use mongodb::{
-    bson::{ extjson::de::Error },
+    bson::{ extjson::de::Error, oid::ObjectId, doc },
     results::{ InsertOneResult },
     sync::{ Client, Collection },
 };
@@ -38,5 +38,16 @@ impl MongoRepo {
             .ok()
             .expect("Error creating user");
         Ok(todo)
+    }
+
+    pub fn get_todo(&self, id: &String) -> Result<Todo, Error> {
+        let obj_id = ObjectId::parse_str(id).unwrap();
+        let filter = doc! { "_id": obj_id };
+        let todo_detail = self
+            .col
+            .find_one(filter, None)
+            .ok()
+            .expect("Error getting todo's detail");
+        Ok(todo_detail.unwrap())
     }
 }
