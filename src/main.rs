@@ -6,6 +6,7 @@ mod repository;
 
 use api::todo_api::{
     create_todo,
+    update_todo,
     get_todo,
 };
 use repository::mongodb_repo::MongoRepo;
@@ -16,5 +17,6 @@ fn rocket() -> _ {
     rocket::build()
         .manage(db)
         .mount("/", routes![create_todo])
+        .mount("/", routes![update_todo])
         .mount("/", routes![get_todo])
 }

@@ -4,7 +4,7 @@ use dotenv::dotenv;
 
 use mongodb::{
     bson::{ extjson::de::Error, oid::ObjectId, doc },
-    results::{ InsertOneResult },
+    results::{ InsertOneResult, UpdateResult },
     sync::{ Client, Collection },
 };
 use crate::models::todo_model::Todo;
@@ -50,4 +50,22 @@ impl MongoRepo {
             .expect("Error getting todo's detail");
         Ok(todo_detail.unwrap())
     }
+
+    pub fn update_todo(&self, id: &String, new_todo: Todo) -> Result<UpdateResult, Error> {
+        let obj_id = ObjectId::parse_str(id).unwrap();
+        let filter = doc! {"_id": obj_id};
+        let new_doc = doc! {
+            "$set": {
+                "id": new_todo.id,
+                "name": new_todo.name,
+                "checked": new_todo.checked,
+            },
+        };
+        let updated_doc = self
+            .col
+            .update_one(filter, new_doc, None)
+            .ok()
+            .expect("Error updating todo");
+        Ok(updated_doc)
+    } 
 }
