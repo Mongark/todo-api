@@ -3,9 +3,20 @@ extern crate dotenv;
 use dotenv::dotenv;
 
 use mongodb::{
-    bson::{ extjson::de::Error, oid::ObjectId, doc },
-    results::{ InsertOneResult, UpdateResult },
-    sync::{ Client, Collection },
+    bson::{
+        extjson::de::Error,
+        oid::ObjectId,
+        doc,
+    },
+    results::{
+        InsertOneResult,
+        UpdateResult,
+        DeleteResult,
+    },
+    sync::{
+        Client,
+        Collection,
+    },
 };
 use crate::models::todo_model::Todo;
 
@@ -67,5 +78,16 @@ impl MongoRepo {
             .ok()
             .expect("Error updating todo");
         Ok(updated_doc)
-    } 
+    }
+
+    pub fn delete_todo(&self, id: &String) -> Result<DeleteResult, Error> {
+        let obj_id = ObjectId::parse_str(id).unwrap();
+        let filter = doc! {"_id": obj_id};
+        let todo_detail = self
+            .col
+            .delete_one(filter, None)
+            .ok()
+            .expect("Error deleting todo");
+        Ok(todo_detail)
+    }
 }

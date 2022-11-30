@@ -8,6 +8,7 @@ use api::todo_api::{
     create_todo,
     update_todo,
     get_todo,
+    delete_todo,
 };
 use repository::mongodb_repo::MongoRepo;
 
@@ -18,5 +19,6 @@ fn rocket() -> _ {
         .manage(db)
         .mount("/", routes![create_todo])
         .mount("/", routes![update_todo])
+        .mount("/", routes![delete_todo])
         .mount("/", routes![get_todo])
 }

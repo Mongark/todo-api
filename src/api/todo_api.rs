@@ -77,3 +77,25 @@ pub fn update_todo(
         Err(_) => Err(Status::InternalServerError),
     }
 }
+
+#[delete("/todo/<path>")]
+pub fn delete_todo(
+    db: &State<MongoRepo>,
+    path: String
+) -> Result<Json<&str>, Status> {
+    let id = path;
+    if id.is_empty() {
+        return Err(Status::BadRequest);
+    }
+    let result = db.delete_todo(&id);
+    match result {
+        Ok(res) => {
+            if res.deleted_count == 1 {
+                return Ok(Json("To-Do successfully deleted!"));
+            } else {
+                return Err(Status::NotFound);
+            }
+        }
+        Err(_) => Err(Status::InternalServerError),
+    }
+}
