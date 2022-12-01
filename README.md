@@ -14,3 +14,7 @@ A database instance can be created by running the `spinup.sh` bash script. It re
 * `DELETE /todo/:path` Deletes a todo with id of 'path' from the database.
 
 * `Get /todos` Gets all todos in the database.
+
+## TO-DO
+
+-[ ] Authentication with JWT
