@@ -90,4 +90,14 @@ impl MongoRepo {
             .expect("Error deleting todo");
         Ok(todo_detail)
     }
+
+    pub fn get_all_todos(&self) -> Result<Vec<Todo>, Error> {
+        let cursors = self
+            .col
+            .find(None, None)
+            .ok()
+            .expect("Error getting list of todos");
+        let todos = cursors.map(|doc| doc.unwrap()).collect();
+        Ok(todos)
+    }
 }

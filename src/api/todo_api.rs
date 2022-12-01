@@ -61,7 +61,7 @@ pub fn update_todo(
         checked: new_todo.checked.to_owned(),
     };
     let update_result = db.update_todo(&id, data);
-    
+
     match update_result {
         Ok(update) => {
             if update.matched_count == 1 {
@@ -96,6 +96,17 @@ pub fn delete_todo(
                 return Err(Status::NotFound);
             }
         }
+        Err(_) => Err(Status::InternalServerError),
+    }
+}
+
+#[get("/todos")]
+pub fn get_all_todos(
+    db: &State<MongoRepo>
+) -> Result<Json<Vec<Todo>>, Status> {
+    let todos = db.get_all_todos();
+    match todos {
+        Ok(todos) => Ok(Json(todos)),
         Err(_) => Err(Status::InternalServerError),
     }
 }
