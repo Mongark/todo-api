@@ -12,3 +12,5 @@ A database instance can be created by running the `spinup.sh` bash script. It re
 `PUT /todo/:path <data>` Updates a todo with id of 'path' from the database with the data in \<data\>.
 
 `DELETE /todo/:path` Deletes a todo with id of 'path' from the database.
+
+`Get /todos` Gets all todos in the database.
