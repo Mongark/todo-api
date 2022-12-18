@@ -1,4 +1,7 @@
 # Todo API
+
+![GitHub repo size](https://img.shields.io/github/repo-size/Mongark/todo-api)
+
 A simple API for managing a to-do list. It use Rocket for the API, and a MongoDB driver that connects to a local database.
 
 A database instance can be created by running the `spinup.sh` bash script. It requires docker-compose to work.
